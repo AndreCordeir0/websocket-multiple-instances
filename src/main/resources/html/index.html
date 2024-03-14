@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div style="display: flex; flex-direction: column;">
+        <input id="texto" placeholder="Digite o texto" type="text"/>
+        <button id="button-submit" onclick="enviarEvent()">Enviar</button>
+    </div>
+    <div class="messages" style="display: flex; flex-direction: column;">
+
+    </div>
+</body>
+<script>
+    let name = prompt('digite seu nome');
+    const messagesDiv = document.querySelector('.messages');
+    let arrayMessages = [];
+    let mensagem;
+    let websocket;
+    function criarLabel(mensagem) {
+        const label = document.createElement('label');
+        label.innerText = mensagem;
+        return label;
+    }
+
+    function startWebSocket() {
+        if (!name) {
+            alert('Escreva seu nome e uma mensagem');
+            return;
+        }
+        websocket = new WebSocket(`ws://localhost:9999/web-socket/chat/${name}`);
+        websocket.onopen = (event) =>{
+            console.log('WebSocket connection established.')
+        }
+
+        websocket.onmessage = (event) =>{
+            console.log('WebSocket connection established.');
+            arrayMessages.push(event.data);
+            montarHTML(event.data);
+        }
+
+        websocket.onerror = (event) =>{
+            console.log('Error');
+        }
+
+        websocket.onclose = (event) =>{
+            console.log('Connection closed', event);
+            // startWebSocket();
+        }
+    }
+    function montarHTML(mensagem){
+        messagesDiv.appendChild(criarLabel(mensagem));
+    }
+    function enviarEvent() {
+        name = document.querySelector('#nome');
+        mensagem = document.querySelector('#texto');
+        websocket.send(mensagem.value);
+    }
+    startWebSocket();
+</script>
+</html>

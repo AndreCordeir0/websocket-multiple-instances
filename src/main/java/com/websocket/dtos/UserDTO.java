@@ -1,25 +1,17 @@
-package com.websocket.models;
-
-import io.quarkus.hibernate.orm.panache.PanacheEntity;
-import jakarta.persistence.*;
+package com.websocket.dtos;
 
 import java.time.LocalDateTime;
 
-@Entity(name = "TB_USER")
-public class User extends PanacheEntity {
-
-
-    @Column(updatable = false)
+public class UserDTO {
+    private Long id;
     private String nickname;
-
-    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     public Long getId() {
         return id;
     }
 
-    public User setId(Long id) {
+    public UserDTO setId(Long id) {
         this.id = id;
         return this;
     }
@@ -28,7 +20,7 @@ public class User extends PanacheEntity {
         return nickname;
     }
 
-    public User setNickname(String nickname) {
+    public UserDTO setNickname(String nickname) {
         this.nickname = nickname;
         return this;
     }
@@ -37,7 +29,7 @@ public class User extends PanacheEntity {
         return createdAt;
     }
 
-    public User setCreatedAt(LocalDateTime createdAt) {
+    public UserDTO setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
     }

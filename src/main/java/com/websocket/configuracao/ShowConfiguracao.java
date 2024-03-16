@@ -1,6 +1,5 @@
 package com.websocket.configuracao;
 
-import io.quarkus.runtime.Startup;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.event.Observes;
@@ -18,6 +17,7 @@ public class ShowConfiguracao {
     String serverKafka;
 
     public void start(@Observes StartupEvent ev) {
+        log.info("###Environments: ");
         log.info("Kafka Group: " + groupId);
         log.info("Server kafka: " + serverKafka);
     }

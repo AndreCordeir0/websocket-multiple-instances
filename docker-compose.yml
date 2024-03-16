@@ -11,6 +11,7 @@ services:
       GROUP_ID: group01
     depends_on:
       - kafka01
+      - postgres
     deploy:
       resources:
         limits:
@@ -73,19 +74,17 @@ services:
       - KAFKA_CLUSTERS_0_NAME=local
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka01:9092
       - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:2181
-
-#  db:
-#    image: postgres:latest
-#    command: 'postgres -c max_connections=12 -c shared_buffers=16MB -c checkpoint_timeout=600 -c synchronous_commit=off -c fsync=off -c full_page_writes=off -c work_mem=4MB'
-#    network_mode: host
-#    environment:
-#      - POSTGRES_DB=root
-#      - POSTGRES_USER=root
-#      - POSTGRES_PASSWORD=root
-#    volumes:
-#      - ./config/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
-#    deploy:
-#      resources:
-#        limits:
-#          cpus: "0.40"
-#          memory: "220MB"
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: applicationuser
+      POSTGRES_USER: applicationuser
+      POSTGRES_DB: websocket
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+volumes:
+  postgres_data:
